@@ -15,6 +15,7 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
   const [currentGuess, setCurrentGuess] = useState('');
   const [feedback, setFeedback] = useState<string | null>(null);
   const [invalidGuessVersion, setInvalidGuessVersion] = useState(0);
+  const [invalidGuess, setInvalidGuess] = useState<string | null>(null);
 
   const isEditableTarget = (target: EventTarget | null) => {
     if (!(target instanceof HTMLElement)) {
@@ -81,16 +82,19 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
 
     if (currentGuess.length !== WORD_LENGTH) {
       setFeedback(`Need ${WORD_LENGTH} letters.`);
+      setInvalidGuess(null);
       return;
     }
 
     if (!validWords.has(currentGuess)) {
       setFeedback('Word not in dictionary.');
+      setInvalidGuess(currentGuess);
       setInvalidGuessVersion((version) => version + 1);
       return;
     }
 
     setFeedback(null);
+    setInvalidGuess(null);
     setTurns((previous) => [...previous, currentGuess]);
     setCurrentGuess('');
   }, [currentGuess, gameOver, validWords]);
@@ -106,12 +110,14 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
 
       if (key === 'Backspace') {
         setFeedback(null);
+        setInvalidGuess(null);
         setCurrentGuess((previous) => previous.slice(0, -1));
         return;
       }
 
       if (/^[A-Z]$/.test(key) && currentGuess.length < WORD_LENGTH) {
         setFeedback(null);
+        setInvalidGuess(null);
         setCurrentGuess((previous) => previous + key);
       }
     },
@@ -160,6 +166,7 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
     gameOver,
     keyState,
     handleKey,
+    invalidGuess,
     invalidGuessVersion,
   };
 };

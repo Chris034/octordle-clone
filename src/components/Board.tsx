@@ -4,6 +4,7 @@ import type { BoardState, LetterState } from '../game/types';
 type BoardProps = {
   board: BoardState;
   currentGuess: string;
+  invalidGuess: string | null;
   invalidGuessVersion: number;
 };
 
@@ -14,7 +15,7 @@ const toLetters = (guess: string): string[] => {
 
 const tileClass = (state: LetterState) => `tile ${state}`;
 
-export default function Board({ board, currentGuess, invalidGuessVersion }: BoardProps) {
+export default function Board({ board, currentGuess, invalidGuess, invalidGuessVersion }: BoardProps) {
   const paddedRows = [
     ...board.rows,
     ...Array.from({ length: Math.max(0, MAX_GUESSES - board.rows.length) }, () => ({ guess: '', states: [] as LetterState[] })),
@@ -32,7 +33,9 @@ export default function Board({ board, currentGuess, invalidGuessVersion }: Boar
           const letters = toLetters(row.guess);
           const isInvalidCurrentRow =
             invalidGuessVersion > 0
+            && invalidGuess === currentGuess
             && currentGuess.length === WORD_LENGTH
+            && row.guess.length === WORD_LENGTH
             && !board.solved
             && !board.failed
             && rowIndex === board.rows.length - 1
