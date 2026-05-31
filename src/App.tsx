@@ -154,7 +154,7 @@ function App() {
           </div>
         </div>
       ) : (
-        <p className="preset-note">HARD loads a fresh daily set from the full answer pool.</p>
+        <p className="preset-note">HARD loads the fixed 8-word brutal preset.</p>
       )}
     </section>
   );
