@@ -242,6 +242,15 @@ body {
   gap: 0.18rem;
 }
 
+.board-row.invalid-guess {
+  animation: invalid-guess-shake 280ms ease;
+}
+
+.board-row.invalid-guess .tile {
+  border-color: #b24a3f;
+  animation: invalid-guess-flash 280ms ease;
+}
+
 .tile {
   aspect-ratio: 1 / 1;
   border-radius: 6px;
@@ -271,6 +280,40 @@ body {
 .tile.correct {
   background: var(--correct);
   color: #fff;
+}
+
+@keyframes invalid-guess-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-5px);
+  }
+
+  40% {
+    transform: translateX(5px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes invalid-guess-flash {
+  0%,
+  100% {
+    background: var(--pending);
+  }
+
+  50% {
+    background: #f4d2cc;
+  }
 }
 
 .keyboard {

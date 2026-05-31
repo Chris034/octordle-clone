@@ -20,7 +20,7 @@ type GameRoundProps = {
 };
 
 function GameRound({ activePreset, controls, solutions, validWords }: GameRoundProps) {
-  const { boards, currentGuess, turns, message, solvedCount, gameOver, keyState, handleKey } = useOctordleGame(solutions, validWords);
+  const { boards, currentGuess, turns, message, solvedCount, gameOver, keyState, handleKey, invalidGuessVersion } = useOctordleGame(solutions, validWords);
 
   return (
     <>
@@ -41,7 +41,7 @@ function GameRound({ activePreset, controls, solutions, validWords }: GameRoundP
         <p className="message" aria-live="polite">{gameOver ? 'Round complete.' : message}</p>
       </header>
 
-      <BoardGrid boards={boards} />
+      <BoardGrid boards={boards} currentGuess={currentGuess} invalidGuessVersion={invalidGuessVersion} />
       <Keyboard keyState={keyState} onKey={handleKey} />
     </>
   );

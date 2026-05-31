@@ -14,6 +14,7 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
   const [turns, setTurns] = useState<string[]>([]);
   const [currentGuess, setCurrentGuess] = useState('');
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [invalidGuessVersion, setInvalidGuessVersion] = useState(0);
 
   const isEditableTarget = (target: EventTarget | null) => {
     if (!(target instanceof HTMLElement)) {
@@ -85,6 +86,7 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
 
     if (!validWords.has(currentGuess)) {
       setFeedback('Word not in dictionary.');
+      setInvalidGuessVersion((version) => version + 1);
       return;
     }
 
@@ -158,5 +160,6 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
     gameOver,
     keyState,
     handleKey,
+    invalidGuessVersion,
   };
 };
