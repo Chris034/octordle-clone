@@ -383,6 +383,10 @@ body {
     height: 2.5rem;
     font-size: 0.8rem;
   }
+
+  .kb-split-cell {
+    height: 0.32rem;
+  }
 }
 
 @media (min-width: 1024px) {

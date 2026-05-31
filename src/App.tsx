@@ -27,8 +27,8 @@ function GameRound({ activePreset, controls, solutions, validWords }: GameRoundP
       <header className="top-bar">
         <div className="top-bar-row">
           <div className="title-block">
-            <p className="kicker">Octordle Clone</p>
-            <h1>Daily 8-Board Sprint</h1>
+            <p className="kicker">Octordle</p>
+            <h1>8-Board Wordle</h1>
           </div>
           {controls}
         </div>

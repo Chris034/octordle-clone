@@ -27,12 +27,14 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
 
   const boards = useMemo<BoardState[]>(() => {
     return solutions.map((solution, index) => {
-      const rows = turns.map((guess) => ({
+      const solveTurnIndex = turns.findIndex((guess) => guess === solution);
+      const visibleTurns = solveTurnIndex >= 0 ? turns.slice(0, solveTurnIndex + 1) : turns;
+      const rows = visibleTurns.map((guess) => ({
         guess,
         states: evaluateGuess(guess, solution),
       }));
 
-      const solved = turns.some((guess) => guess === solution);
+      const solved = solveTurnIndex >= 0;
       const failed = !solved && turns.length >= MAX_GUESSES;
 
       if (turns.length < MAX_GUESSES && !failed && !solved) {
