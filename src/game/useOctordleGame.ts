@@ -15,6 +15,14 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
   const [currentGuess, setCurrentGuess] = useState('');
   const [feedback, setFeedback] = useState<string | null>(null);
 
+  const isEditableTarget = (target: EventTarget | null) => {
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+
+    return target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+  };
+
   const boards = useMemo<BoardState[]>(() => {
     return solutions.map((solution, index) => {
       const rows = turns.map((guess) => ({
@@ -110,6 +118,10 @@ export const useOctordleGame = (solutions: string[], validWords: Set<string> = V
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) {
+        return;
+      }
+
       const key = event.key.length === 1 ? event.key.toUpperCase() : event.key;
       if (key === 'Enter' || key === 'Backspace' || /^[A-Z]$/.test(key)) {
         event.preventDefault();

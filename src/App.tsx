@@ -50,6 +50,7 @@ function GameRound({ activePreset, controls, solutions, validWords }: GameRoundP
 function App() {
   const [selectedPreset, setSelectedPreset] = useState<SolutionPreset>('hard');
   const [activePreset, setActivePreset] = useState<SolutionPreset>('hard');
+  const [isCustomPanelOpen, setIsCustomPanelOpen] = useState(false);
   const [customWords, setCustomWords] = useState<string[]>(EMPTY_CUSTOM_WORDS);
   const [activeSolutions, setActiveSolutions] = useState<string[]>(() => getHardPresetSolutions());
   const [roundVersion, setRoundVersion] = useState(0);
@@ -68,12 +69,14 @@ function App() {
 
     if (preset === 'hard') {
       setActivePreset('hard');
+      setIsCustomPanelOpen(false);
       setActiveSolutions(getHardPresetSolutions());
       setRoundVersion((version) => version + 1);
       setCustomStatus('Enter 8 words to build your own board set.');
       return;
     }
 
+    setIsCustomPanelOpen(true);
     setCustomStatus('Enter 8 five-letter solutions, then start a custom round.');
   };
 
@@ -98,6 +101,7 @@ function App() {
     }
 
     setActivePreset('custom');
+    setIsCustomPanelOpen(false);
     setActiveSolutions(trimmedWords);
     setRoundVersion((version) => version + 1);
     setCustomStatus('Custom solutions loaded.');
@@ -126,7 +130,7 @@ function App() {
         </button>
       </div>
 
-      {selectedPreset === 'custom' ? (
+      {isCustomPanelOpen ? (
         <div className="custom-panel">
           <div className="custom-grid">
             {customWords.map((word, index) => (
@@ -154,7 +158,11 @@ function App() {
           </div>
         </div>
       ) : (
-        <p className="preset-note">HARD loads the fixed 8-word brutal preset.</p>
+        <p className="preset-note">
+          {selectedPreset === 'custom'
+            ? `${customStatus} Click Custom to edit the solution list again.`
+            : 'HARD loads the fixed 8-word brutal preset.'}
+        </p>
       )}
     </section>
   );
