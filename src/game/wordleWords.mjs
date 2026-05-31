@@ -1,0 +1,1 @@
+export { all, answers } from '../../node_modules/wordle-words/index.mjs';
